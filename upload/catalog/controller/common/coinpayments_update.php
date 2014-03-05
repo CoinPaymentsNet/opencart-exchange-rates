@@ -25,6 +25,14 @@ class ControllerCommonCoinPaymentsUpdate extends Controller {
 	private $api_secret = '';
 	private $wanted_coins = array('KDC','BTC','LTC');
 	
+	private function cps_get_currency_code($code) {
+		$code = strtoupper($code);
+		if ($code == 'DOG') { return 'DOGE'; }
+		if ($code == 'MNT') { return 'MINT'; }
+		if ($code == 'NBL') { return 'NOBL'; }
+		return $code;
+	}	
+	
 	public function index() {
 		if (extension_loaded('curl') && count($this->wanted_coins)) {
 			$data = array();
@@ -33,7 +41,7 @@ class ControllerCommonCoinPaymentsUpdate extends Controller {
 			
 			$ts = $this->cache->get('coinpayments_last_check');
 			if (!$ts) {
-				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "currency WHERE code = '".$this->db->escape(strtoupper($this->wanted_coins[0]))."'"); //check the first coin just for timestamping purposes						
+				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "currency WHERE code = '".$this->db->escape($this->cps_get_currency_code($this->wanted_coins[0]))."'"); //check the first coin just for timestamping purposes						
 				if(!$query->row) {
 					//can't find coin, run update...
 					$do_update = true;
@@ -55,9 +63,9 @@ class ControllerCommonCoinPaymentsUpdate extends Controller {
 	}
 	
 	private function createCoin($code, $name) {
-			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "currency WHERE code = '".$this->db->escape($code)."'"); //check the first coin just for timestamping purposes						
+			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "currency WHERE code = '".$this->db->escape($this->cps_get_currency_code($code))."'"); //check the first coin just for timestamping purposes						
 			if(!$query->row) {
-				$this->db->query("INSERT INTO " . DB_PREFIX . "currency (title, code, symbol_right, decimal_place, status) VALUES ('".$this->db->escape($name)."', '".$this->db->escape($code)."', ' ".$this->db->escape($code)."', '8', '1')");
+				$this->db->query("INSERT INTO " . DB_PREFIX . "currency (title, code, symbol_right, decimal_place, status) VALUES ('".$this->db->escape($name)."', '".$this->db->escape($this->cps_get_currency_code($code))."', ' ".$this->db->escape($code)."', '8', '1')");
 			}
 	}
 		
@@ -76,9 +84,9 @@ class ControllerCommonCoinPaymentsUpdate extends Controller {
 								$this->createCoin($c, $data['result'][$c]['name']);
 							}
 							$rate = (float)round($base_rate * (1/$data['result'][$c]['rate_btc']), 8);
-							$this->db->query("UPDATE " . DB_PREFIX . "currency SET value = '" . $rate . "', date_modified = '" .  $this->db->escape(date('Y-m-d H:i:s')) . "' WHERE code = '" . $this->db->escape($c) . "'");
+							$this->db->query("UPDATE " . DB_PREFIX . "currency SET value = '" . $rate . "', date_modified = '" .  $this->db->escape(date('Y-m-d H:i:s')) . "' WHERE code = '" . $this->db->escape($this->cps_get_currency_code($c)) . "'");
 						}
-						$this->db->query("UPDATE " . DB_PREFIX . "currency SET value = '1.00000', date_modified = '" .  $this->db->escape(date('Y-m-d H:i:s')) . "' WHERE code = '" . $this->db->escape($default_currency_code) . "'");
+						$this->db->query("UPDATE " . DB_PREFIX . "currency SET value = '1.00000', date_modified = '" .  $this->db->escape(date('Y-m-d H:i:s')) . "' WHERE code = '" . $this->db->escape($this->cps_get_currency_code($default_currency_code)) . "'");
 						$this->cache->delete('currency');					
 					} else {
 						throw new Exception('Error getting CoinPayments exchange rates: could not find your base currency in the rates: '.$default_currency_code);
