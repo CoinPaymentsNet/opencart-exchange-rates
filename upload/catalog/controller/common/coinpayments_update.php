@@ -27,9 +27,16 @@ class ControllerCommonCoinPaymentsUpdate extends Controller {
 	
 	private function cps_get_currency_code($code) {
 		$code = strtoupper($code);
-		if ($code == 'DOG') { return 'DOGE'; }
-		if ($code == 'MNT') { return 'MINT'; }
-		if ($code == 'NBL') { return 'NOBL'; }
+		if ($code == 'DOGE') { return 'DOG'; }
+		if ($code == 'MINT') { return 'MNT'; }
+		if ($code == 'NOBL') { return 'NBL'; }
+		if ($code == 'DASH') { return 'DAS'; }
+		if ($code == 'CLOAK') { return 'CLK'; }
+		if ($code == 'HTML5') { return 'HTM'; }
+		if ($code == 'HYPER') { return 'HYP'; }
+		if ($code == 'OPAL') { return 'OPL'; }
+		if ($code == 'START') { return 'SRT'; }
+		if ($code == 'ZEIT') { return 'ZEI'; }
 		return $code;
 	}	
 	
