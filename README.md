@@ -12,7 +12,7 @@ Installation is a three step process.  You must upload coinpayments_update.php a
 STEP 1) Open coinpayments_update.php in your Text Editor. You will see these lines:<br />
 	private $api_public = '';<br />
 	private $api_secret = '';<br />
-	private $wanted_coins = array('KDC','BTC','LTC');<br />
+	private $wanted_coins = array('BTC','LTC');<br />
 
 Fill in your API Public and Private keys from one of your API keys on the API Keys page at CoinPayments.net. The API key only needs the 'rates' permission.
 Put the currency codes of the currencies you want to add/update in OpenCart in the $wanted_coins array.
@@ -33,9 +33,9 @@ Add:<br />
 // Update Currencies<br />
 $controller->addPreAction(new Action('common/coinpayments_update'));
 
-Enjoy!  Please contact support@coinpayments.net with any issues you may have.
+Enjoy!  Please contact us at https://www.coinpayments.net/help-support with any issues you may have.
 
-Copyright (c) 2014 CoinPayments.net<br />
+Copyright (c) 2014-2017 CoinPayments.net<br />
 Copyright (c) 2013 John Atkinson (jga)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
