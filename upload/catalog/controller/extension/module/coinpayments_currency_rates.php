@@ -12,7 +12,7 @@ class ControllerExtensionModuleCoinpaymentsCurrencyRates extends Controller
 
     public function index()
     {
-        if ($this->config->get('module_coinpayments_currency_status') == 1 && extension_loaded('curl')) {
+        if ($this->config->get('module_coinpayments_currency_rates_status') == 1 && extension_loaded('curl')) {
             $update = false;
 
             if ((time() - $this->cache->get(self::CACHE_KEY)) > 60) {
@@ -31,8 +31,8 @@ class ControllerExtensionModuleCoinpaymentsCurrencyRates extends Controller
         try {
             $this->load->model('extension/module/coinpayments_currency_rates');
 
-            $client_id = $this->config->get('module_coinpayments_currency_client_id');
-            $client_secret = $this->config->get('module_coinpayments_currency_client_secret');
+            $client_id = $this->config->get('module_coinpayments_currency_rates_client_id');
+            $client_secret = $this->config->get('module_coinpayments_currency_rates_client_secret');
             $this->model_extension_module_coinpayments_currency_rates->updateCurrencyRates($client_id, $client_secret, $this->config->get('config_currency'));
 
         } catch (Exception $e) {

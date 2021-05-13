@@ -32,7 +32,7 @@ class ControllerExtensionModuleCoinpaymentsCurrencyRates extends Controller
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
 
             $this->model_setting_setting->editSetting('module_coinpayments_currency', $this->request->post);
-            $this->session->data['success'] = $this->language->get('text_success') . " / status: " . ($this->request->post['module_coinpayments_currency_status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled'));
+            $this->session->data['success'] = $this->language->get('text_success') . " / status: " . ($this->request->post['module_coinpayments_currency_rates_status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled'));
             $this->response->redirect($this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=module', true));
         }
 
@@ -68,20 +68,20 @@ class ControllerExtensionModuleCoinpaymentsCurrencyRates extends Controller
             'text' => $this->language->get('heading_title'),
             'href' => $this->url->link('extension/module/coinpayments_currency_rates', 'user_token=' . $this->session->data['user_token'], 'SSL')
         );
-        if (isset($this->request->post['module_coinpayments_currency_client_id'])) {
-            $data['module_coinpayments_currency_client_id'] = $this->request->post['module_coinpayments_currency_client_id'];
+        if (isset($this->request->post['module_coinpayments_currency_rates_client_id'])) {
+            $data['module_coinpayments_currency_rates_client_id'] = $this->request->post['module_coinpayments_currency_rates_client_id'];
         } else {
-            $data['module_coinpayments_currency_client_id'] = $this->config->get('module_coinpayments_currency_client_id');
+            $data['module_coinpayments_currency_rates_client_id'] = $this->config->get('module_coinpayments_currency_rates_client_id');
         }
-        if (isset($this->request->post['module_coinpayments_currency_client_secret'])) {
-            $data['module_coinpayments_currency_client_secret'] = $this->request->post['module_coinpayments_currency_client_secret'];
+        if (isset($this->request->post['module_coinpayments_currency_rates_client_secret'])) {
+            $data['module_coinpayments_currency_rates_client_secret'] = $this->request->post['module_coinpayments_currency_rates_client_secret'];
         } else {
-            $data['module_coinpayments_currency_client_secret'] = $this->config->get('module_coinpayments_currency_client_secret');
+            $data['module_coinpayments_currency_rates_client_secret'] = $this->config->get('module_coinpayments_currency_rates_client_secret');
         }
-        if (isset($this->request->post['module_coinpayments_currency_status'])) {
-            $data['module_coinpayments_currency_status'] = $this->request->post['module_coinpayments_currency_status'];
+        if (isset($this->request->post['module_coinpayments_currency_rates_status'])) {
+            $data['module_coinpayments_currency_rates_status'] = $this->request->post['module_coinpayments_currency_rates_status'];
         } else {
-            $data['module_coinpayments_currency_status'] = $this->config->get('module_coinpayments_currency_status');
+            $data['module_coinpayments_currency_rates_status'] = $this->config->get('module_coinpayments_currency_rates_status');
         }
 
 
@@ -134,19 +134,19 @@ class ControllerExtensionModuleCoinpaymentsCurrencyRates extends Controller
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
-        if (empty($this->request->post['module_coinpayments_currency_client_id'])) {
+        if (empty($this->request->post['module_coinpayments_currency_rates_client_id'])) {
             $this->error['client_id'] = $this->language->get('error_client_id');
         }
 
-        if (empty($this->request->post['module_coinpayments_currency_client_secret'])) {
+        if (empty($this->request->post['module_coinpayments_currency_rates_client_secret'])) {
             $this->error['client_secret'] = $this->language->get('error_client_secret');
         }
 
         if (empty($this->error)) {
             $this->load->model('extension/module/coinpayments_currency_rates');
 
-            $client_id = $this->request->post['module_coinpayments_currency_client_id'];
-            $client_secret = $this->request->post['module_coinpayments_currency_client_secret'];
+            $client_id = $this->request->post['module_coinpayments_currency_rates_client_id'];
+            $client_secret = $this->request->post['module_coinpayments_currency_rates_client_secret'];
 
             if (!$this->model_extension_module_coinpayments_currency_rates->validateCredentials($client_id, $client_secret)) {
                 $this->error['invalid_credentials'] = $this->language->get('error_invalid_credentials');
@@ -164,7 +164,7 @@ class ControllerExtensionModuleCoinpaymentsCurrencyRates extends Controller
 
         $this->load->model('setting/event');
         $settings = $this->model_setting_setting->getSetting('module_coinpayments_currency');
-        $settings['module_coinpayments_currency_status'] = 1;
+        $settings['module_coinpayments_currency_rates_status'] = 1;
         $this->model_setting_setting->editSetting('module_coinpayments_currency', $settings);
 
         $this->db->query("ALTER TABLE `" . DB_PREFIX . "currency` modify value double(40,30) not null");
@@ -200,7 +200,7 @@ class ControllerExtensionModuleCoinpaymentsCurrencyRates extends Controller
         $this->load->model('setting/event');
 
         $settings = $this->model_setting_setting->getSetting('module_coinpayments_currency');
-        $settings['module_coinpayments_currency_status'] = 0;
+        $settings['module_coinpayments_currency_rates_status'] = 0;
         $this->model_setting_setting->editSetting('module_coinpayments_currency', $settings);
 
 

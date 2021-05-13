@@ -44,8 +44,8 @@
                             {{ entry_client_id }}
                         </label>
                         <div class="col-sm-10">
-                            <input type="text" name="module_coinpayments_currency_client_id" id="input-client-id"
-                                   value="{{ module_coinpayments_currency_client_id }}" placeholder=""
+                            <input type="text" name="module_coinpayments_currency_rates_client_id" id="input-client-id"
+                                   value="{{ module_coinpayments_currency_rates_client_id }}" placeholder=""
                                    class="form-control"/>
                             <small class="form-text text-muted">{{ help_client_id }}</small>
 
@@ -64,9 +64,9 @@
                             {{ entry_client_secret }}
                         </label>
                         <div class="col-sm-10">
-                            <input type="text" name="module_coinpayments_currency_client_secret"
+                            <input type="text" name="module_coinpayments_currency_rates_client_secret"
                                    id="input-client-secret"
-                                   value="{{ module_coinpayments_currency_client_secret }}" placeholder=""
+                                   value="{{ module_coinpayments_currency_rates_client_secret }}" placeholder=""
                                    class="form-control"/>
                             <small class="form-text text-muted">{{ help_client_secret }}</small>
 
@@ -97,8 +97,8 @@
                             {{ entry_status }}
                         </label>
                         <div class="col-sm-10">
-                            <select name="module_coinpayments_currency_status" id="input-status" class="form-control">
-                                {% if module_coinpayments_currency_status %}
+                            <select name="module_coinpayments_currency_rates_status" id="input-status" class="form-control">
+                                {% if module_coinpayments_currency_rates_status %}
                                     <option value="1" selected="selected">{{ text_enabled }}</option>
                                     <option value="0">{{ text_disabled }}</option>
                                 {% else %}
