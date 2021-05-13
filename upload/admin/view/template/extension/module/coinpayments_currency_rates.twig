@@ -1,0 +1,119 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="float-right">
+                <button type="submit" form="form-coinpayments-account" data-toggle="tooltip"
+                        title="{{ button_save }}"
+                        class="btn btn-primary"><i class="fa fa-save"></i></button>
+
+                <a href="{{ url_cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i
+                            class="fa fa-reply"></i></a>
+            </div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid" id="coinpayments-page">
+        {% if error_warning %}
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        {% if success %}
+            <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <form action="{{ url_action }}" method="post" enctype="multipart/form-data" id="form-coinpayments-account"
+              class="form-horizontal">
+            <div class="card">
+
+                <div class="card-header">
+                    <h3>{{ text_credentials }}</h3>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="form-group row" id="input-client-id-wrap">
+                        <label class="col-sm-2 control-label col-form-label" for="input-client-id">
+                            {{ entry_client_id }}
+                        </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="module_coinpayments_currency_client_id" id="input-client-id"
+                                   value="{{ module_coinpayments_currency_client_id }}" placeholder=""
+                                   class="form-control"/>
+                            <small class="form-text text-muted">{{ help_client_id }}</small>
+
+                            {% if error_client_id %}
+                                <div class="text-danger">{{ error_client_id }}</div>
+                            {% endif %}
+
+                            {% if error_invalid_credentials %}
+                                <div class="text-danger">{{ error_invalid_credentials }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group row" id="input-client-secret-wrap">
+                        <label class="col-sm-2 control-label col-form-label" for="input-client-secret">
+                            {{ entry_client_secret }}
+                        </label>
+                        <div class="col-sm-10">
+                            <input type="text" name="module_coinpayments_currency_client_secret"
+                                   id="input-client-secret"
+                                   value="{{ module_coinpayments_currency_client_secret }}" placeholder=""
+                                   class="form-control"/>
+                            <small class="form-text text-muted">{{ help_client_secret }}</small>
+
+                            {% if error_client_secret %}
+                                <div class="text-danger">{{ error_client_secret }}</div>
+                            {% endif %}
+                            {% if error_invalid_credentials %}
+                                <div class="text-danger">{{ error_invalid_credentials }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="action" value="save">
+
+                </div>
+            </div>
+
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>{{ text_advanced }}</h3>
+                </div>
+
+
+                <div class="card-body">
+                    <div class="form-group row" id="input-status-wrap">
+                        <label class="col-sm-2 control-label col-form-label" for="input-status">
+                            {{ entry_status }}
+                        </label>
+                        <div class="col-sm-10">
+                            <select name="module_coinpayments_currency_status" id="input-status" class="form-control">
+                                {% if module_coinpayments_currency_status %}
+                                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                                    <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                    <option value="1">{{ text_enabled }}</option>
+                                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                            </select>
+                            {% if error_status %}
+                                <div class="text-danger">{{ error_status }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{{ footer }}
