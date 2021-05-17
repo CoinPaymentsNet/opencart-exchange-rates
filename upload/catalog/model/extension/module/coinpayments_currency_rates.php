@@ -72,14 +72,18 @@ class ModelExtensionModuleCoinpaymentsCurrencyRates extends Model
 
 
         $coin_currency_ids = array();
+        $coin_currency_statuses = array();
         foreach ($currencies_list as $currency) {
-            $coin_currency_ids[$currency['currency']['id']] = $currency['currency']['symbol'];
+            $coin_currency_ids[$currency['currency']['id']] =  $currency['currency']['symbol'];
+            $coin_currency_statuses[$currency['currency']['id']] =  $currency['currency']['status'] == 'active' && $currency['switcherStatus'] == 'enabled';
         }
 
-        $conditions = array(sprintf("WHEN '%s' THEN '%s'", $default_currency, '1'));
+        $rate_conditions = array(sprintf("WHEN '%s' THEN '%s'", $default_currency, '1'));
+        $status_conditions = array(sprintf("WHEN '%s' THEN '%s'", $default_currency, '1'));
         if (!empty($rates['items'])) {
             foreach ($rates['items'] as $rate) {
-                $conditions[] = sprintf("WHEN '%s' THEN '%s'", $coin_currency_ids[$rate['quoteCurrencyId']], $rate['rate']);
+                $rate_conditions[] = sprintf("WHEN '%s' THEN '%s'", $coin_currency_ids[$rate['quoteCurrencyId']], $rate['rate']);
+                $status_conditions[] = sprintf("WHEN '%s' THEN '%s'", $coin_currency_ids[$rate['quoteCurrencyId']], $coin_currency_statuses[$rate['quoteCurrencyId']]);
             }
         }
 
@@ -88,7 +92,10 @@ class ModelExtensionModuleCoinpaymentsCurrencyRates extends Model
         $this->db->query("
         UPDATE " . DB_PREFIX . "currency 
         SET value = (CASE code
-        " . implode("\n", $conditions) . "
+        " . implode("\n", $rate_conditions) . "
+        END), 
+        status = (CASE code
+        " . implode("\n", $status_conditions) . "
         END), 
         date_modified = '" . $this->db->escape(date('Y-m-d H:i:s')) . "' 
         WHERE code IN ('" . implode("', '", $coin_currency_ids) . "')");
